@@ -1,0 +1,313 @@
+Terminals unused in grammar
+
+   T_OPEN_BRACKET
+   T_CLOSE_BRACKET
+   T_ROUTER_ID
+   T_AREA_ID
+   T_LENGTH
+   T_CHECKSUM
+   T_INSTANCE_ID
+   T_RESERVED
+   T_ROUTER_IDS
+
+
+Grammar
+
+    0 $accept: line_test $end
+
+    1 statement: T_OPEN_BRACE body T_CLOSE_BRACE
+
+    2 line_test: statement
+
+    3 body: T_HEADER statement T_COMMA T_MSG statement
+    4     | inner
+
+    5 inner: header
+    6      | msg
+
+    7 header: header_expression T_COMMA header_expression T_COMMA header_expression
+
+    8 msg: msg_expression
+
+    9 header_expression: T_VERSION T_NUMBER
+   10                  | T_TYPE T_NUMBER
+   11                  | T_OPTIONS T_NUMBER
+
+   12 msg_expression: T_OPTIONS T_NUMBER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+T_NUMBER (258) 9 10 11 12
+T_OPEN_BRACE (259) 1
+T_CLOSE_BRACE (260) 1
+T_COMMA (261) 3 7
+T_OPEN_BRACKET (262)
+T_CLOSE_BRACKET (263)
+T_HEADER (264) 3
+T_ROUTER_ID (265)
+T_AREA_ID (266)
+T_VERSION (267) 9
+T_TYPE (268) 10
+T_LENGTH (269)
+T_CHECKSUM (270)
+T_INSTANCE_ID (271)
+T_RESERVED (272)
+T_MSG (273) 3
+T_OPTIONS (274) 11 12
+T_ROUTER_IDS (275)
+
+
+Nonterminals, with rules where they appear
+
+$accept (21)
+    on left: 0
+statement (22)
+    on left: 1, on right: 2 3
+line_test (23)
+    on left: 2, on right: 0
+body (24)
+    on left: 3 4, on right: 1
+inner (25)
+    on left: 5 6, on right: 4
+header (26)
+    on left: 7, on right: 5
+msg (27)
+    on left: 8, on right: 6
+header_expression (28)
+    on left: 9 10 11, on right: 7
+msg_expression (29)
+    on left: 12, on right: 8
+
+
+State 0
+
+    0 $accept: . line_test $end
+
+    T_OPEN_BRACE  shift, and go to state 1
+
+    statement  go to state 2
+    line_test  go to state 3
+
+
+State 1
+
+    1 statement: T_OPEN_BRACE . body T_CLOSE_BRACE
+
+    T_HEADER   shift, and go to state 4
+    T_VERSION  shift, and go to state 5
+    T_TYPE     shift, and go to state 6
+    T_OPTIONS  shift, and go to state 7
+
+    body               go to state 8
+    inner              go to state 9
+    header             go to state 10
+    msg                go to state 11
+    header_expression  go to state 12
+    msg_expression     go to state 13
+
+
+State 2
+
+    2 line_test: statement .
+
+    $default  reduce using rule 2 (line_test)
+
+
+State 3
+
+    0 $accept: line_test . $end
+
+    $end  shift, and go to state 14
+
+
+State 4
+
+    3 body: T_HEADER . statement T_COMMA T_MSG statement
+
+    T_OPEN_BRACE  shift, and go to state 1
+
+    statement  go to state 15
+
+
+State 5
+
+    9 header_expression: T_VERSION . T_NUMBER
+
+    T_NUMBER  shift, and go to state 16
+
+
+State 6
+
+   10 header_expression: T_TYPE . T_NUMBER
+
+    T_NUMBER  shift, and go to state 17
+
+
+State 7
+
+   11 header_expression: T_OPTIONS . T_NUMBER
+   12 msg_expression: T_OPTIONS . T_NUMBER
+
+    T_NUMBER  shift, and go to state 18
+
+
+State 8
+
+    1 statement: T_OPEN_BRACE body . T_CLOSE_BRACE
+
+    T_CLOSE_BRACE  shift, and go to state 19
+
+
+State 9
+
+    4 body: inner .
+
+    $default  reduce using rule 4 (body)
+
+
+State 10
+
+    5 inner: header .
+
+    $default  reduce using rule 5 (inner)
+
+
+State 11
+
+    6 inner: msg .
+
+    $default  reduce using rule 6 (inner)
+
+
+State 12
+
+    7 header: header_expression . T_COMMA header_expression T_COMMA header_expression
+
+    T_COMMA  shift, and go to state 20
+
+
+State 13
+
+    8 msg: msg_expression .
+
+    $default  reduce using rule 8 (msg)
+
+
+State 14
+
+    0 $accept: line_test $end .
+
+    $default  accept
+
+
+State 15
+
+    3 body: T_HEADER statement . T_COMMA T_MSG statement
+
+    T_COMMA  shift, and go to state 21
+
+
+State 16
+
+    9 header_expression: T_VERSION T_NUMBER .
+
+    $default  reduce using rule 9 (header_expression)
+
+
+State 17
+
+   10 header_expression: T_TYPE T_NUMBER .
+
+    $default  reduce using rule 10 (header_expression)
+
+
+State 18
+
+   11 header_expression: T_OPTIONS T_NUMBER .
+   12 msg_expression: T_OPTIONS T_NUMBER .
+
+    T_CLOSE_BRACE  reduce using rule 12 (msg_expression)
+    $default       reduce using rule 11 (header_expression)
+
+
+State 19
+
+    1 statement: T_OPEN_BRACE body T_CLOSE_BRACE .
+
+    $default  reduce using rule 1 (statement)
+
+
+State 20
+
+    7 header: header_expression T_COMMA . header_expression T_COMMA header_expression
+
+    T_VERSION  shift, and go to state 5
+    T_TYPE     shift, and go to state 6
+    T_OPTIONS  shift, and go to state 22
+
+    header_expression  go to state 23
+
+
+State 21
+
+    3 body: T_HEADER statement T_COMMA . T_MSG statement
+
+    T_MSG  shift, and go to state 24
+
+
+State 22
+
+   11 header_expression: T_OPTIONS . T_NUMBER
+
+    T_NUMBER  shift, and go to state 25
+
+
+State 23
+
+    7 header: header_expression T_COMMA header_expression . T_COMMA header_expression
+
+    T_COMMA  shift, and go to state 26
+
+
+State 24
+
+    3 body: T_HEADER statement T_COMMA T_MSG . statement
+
+    T_OPEN_BRACE  shift, and go to state 1
+
+    statement  go to state 27
+
+
+State 25
+
+   11 header_expression: T_OPTIONS T_NUMBER .
+
+    $default  reduce using rule 11 (header_expression)
+
+
+State 26
+
+    7 header: header_expression T_COMMA header_expression T_COMMA . header_expression
+
+    T_VERSION  shift, and go to state 5
+    T_TYPE     shift, and go to state 6
+    T_OPTIONS  shift, and go to state 22
+
+    header_expression  go to state 28
+
+
+State 27
+
+    3 body: T_HEADER statement T_COMMA T_MSG statement .
+
+    $default  reduce using rule 3 (body)
+
+
+State 28
+
+    7 header: header_expression T_COMMA header_expression T_COMMA header_expression .
+
+    $default  reduce using rule 7 (header)
